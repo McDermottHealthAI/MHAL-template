@@ -4,12 +4,12 @@
 [![PyPI - Version](https://img.shields.io/pypi/v/PACKAGE_NAME)](https://pypi.org/project/PACKAGE_NAME/)
 [![MEDS v0.4](https://img.shields.io/badge/MEDS-0.4-blue)](https://medical-event-data-standard.github.io/)
 [![Documentation Status](https://readthedocs.org/projects/PACKAGE_NAME/badge/?version=latest)](https://PACKAGE_NAME.readthedocs.io/en/latest/?badge=latest)
-[![Tests](https://github.com/McdermottHealthAI/PACKAGE_NAME/actions/workflows/tests.yaml/badge.svg)](https://github.com/McdermottHealthAI/PACKAGE_NAME/actions/workflows/tests.yaml)
-[![Test Coverage](https://codecov.io/github/McdermottHealthAI/PACKAGE_NAME/graph/badge.svg?token=BV119L5JQJ)](https://codecov.io/github/McdermottHealthAI/PACKAGE_NAME)
-[![Code Quality](https://github.com/McdermottHealthAI/PACKAGE_NAME/actions/workflows/code-quality-main.yaml/badge.svg)](https://github.com/McdermottHealthAI/PACKAGE_NAME/actions/workflows/code-quality-main.yaml)
-[![Contributors](https://img.shields.io/github/contributors/oufattole/meds-torch.svg)](https://github.com/McdermottHealthAI/PACKAGE_NAME/graphs/contributors)
-[![Pull Requests](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/McdermottHealthAI/PACKAGE_NAME/pulls)
-[![License](https://img.shields.io/badge/License-MIT-green.svg?labelColor=gray)](https://github.com/McdermottHealthAI/PACKAGE_NAME#license)
+[![Tests](https://github.com/McDermottHealthAI/MHAL-template/actions/workflows/tests.yaml/badge.svg)](https://github.com/McDermottHealthAI/MHAL-template/actions/workflows/tests.yaml)
+[![Test Coverage](https://codecov.io/github/McDermottHealthAI/MHAL-template/graph/badge.svg?token=BV119L5JQJ)](https://codecov.io/github/McDermottHealthAI/MHAL-template)
+[![Code Quality](https://github.com/McDermottHealthAI/MHAL-template/actions/workflows/code-quality-main.yaml/badge.svg)](https://github.com/McDermottHealthAI/MHAL-template/actions/workflows/code-quality-main.yaml)
+[![Contributors](https://img.shields.io/github/contributors/McDermottHealthAI/MHAL-template.svg)](https://github.com/McDermottHealthAI/PACKAGE_NAME/graphs/contributors)
+[![Pull Requests](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/McDermottHealthAI/PACKAGE_NAME/pulls)
+[![License](https://img.shields.io/badge/License-MIT-green.svg?labelColor=gray)](https://github.com/McDermottHealthAI/PACKAGE_NAME#license)
 
 A minimal python package/project template for McDermott Health AI Lab research projects.
 
@@ -56,8 +56,9 @@ To use this template, simply click the "Use this template" button above to creat
 from this repository; next, you will need to change the following aspects of the new repository:
   - Rename the `PACKAGE_NAME` directory in `src/` to your desired package name.
   - Update the `pyproject.toml` file with your package name, author information, and other metadata.
-  - Update the `README.md` file to point to the correct badge links for your new repository, then update the rest of
-    the file with information relevant to your project.
+  - Update the `README.md` file to point to the correct badge links for your new repository, then update the
+    rest of the file with information relevant to your project. You will want to find and replace both
+    `PACKAGE_NAME` and `MHAL-template` with your new package / repository name.
   - Set-up trusted publishing on PyPI for your new package name pointing to the output repository.
   - Set-up appropriate tokens for CodeCov or other services (if necessary) within your repository.
   - Optionally, update the `LICENSE`, `CONTRIBUTING.md`, and `AGENTS.md` files with information relevant to
