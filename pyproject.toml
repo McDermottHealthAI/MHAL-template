@@ -1,0 +1,76 @@
+[build-system]
+requires = ["setuptools>=80.9.0", "setuptools-scm>=9.2", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "PACKAGE_NAME"
+dynamic = ["version"] # Makes setuptools-scm manage the version
+authors = [
+  {name="Matthew McDermott", email="mattmcdermott8@gmail.com"}, # Replace with your team's details
+]
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License", # Change if not using MIT license
+    "Operating System :: OS Independent",
+]
+dependencies = [
+] # Add your runtime dependencies here
+
+[dependency-groups]
+dev = [
+  "pre-commit<4", "ruff", "pytest", "pytest-cov", "pretty-print-directory"
+] # Add your development (lint, test) dependencies here
+docs = [] # Add your documentation dependencies here (I recommend mkdocs-material)
+
+[tool.setuptools_scm] # Required for setuptools-scm to work, even if empty
+
+[project.optional-dependencies] # Add any optional dependencies here, installable via `pip install .[extra]`
+
+[project.scripts] # Add any console scripts here
+
+[tool.pytest.ini_options] # Default pytest options
+addopts = [
+  "--color=yes",
+  "--doctest-modules", # Ensures that doctest runs
+  "--ignore=docs",
+  "--ignore=AGENTS.md",
+  "--ignore=CONTRIBUTORS.md",
+  "--doctest-glob=*.md",
+]
+markers = [] # Add any custom pytest markers here
+doctest_optionflags = ["NORMALIZE_WHITESPACE", "ELLIPSIS"]
+
+[project.urls]
+Homepage = "https://github.com/McDermottHealthAI/REPO_NAME" # Replace with your repo URL
+Issues = "https://github.com/McDermottHealthAI/REPO_NAME/issues" # Replace with your repo URL
+
+[tool.ruff] # Ruff configuration for linting and formatting
+target-version = "py312"
+line-length = 110
+extend-exclude = ["docs/index.md"]
+
+# Enable linters
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle
+    "F",   # pyflakes
+    "I",   # isort
+    "UP",  # pyupgrade
+    "B",   # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "DTZ", # flake8-datetimez
+    "RUF", # Ruff-specific rules
+    "SIM", # flake8-simplify
+    "TCH", # flake8-type-checking
+    "N",   # pep8-naming
+]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]  # Unused imports in __init__ files
+"test_*" = ["DTZ001"]  # Ignore datetimez in test files
+
+[tool.ruff.lint.pep8-naming]
+extend-ignore-names = ["*MEDS*", "*NRT*", "D"] # Some common names/abbreviations we want to allow
