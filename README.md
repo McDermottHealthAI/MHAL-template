@@ -69,6 +69,10 @@ from this repository; next, you will need to change the following aspects of the
 
 ## Documentation
 
+### Python Build System
+
+This project is built with the [`uv`](https://docs.astral.sh/uv/) tool for managing python builds and environments. `uv` allows you to update package dependencies, install and build your package, and maintain a "lockfile" of specific package and python versions for developmental reproducibility, all through a seamless, `pip` like interface. To use `uv` to install a virtual environment with package dependencies, you can run `uv sync` when in the repository directory. Learn more about it in the documentation linked above.
+
 ### Linting / Code Style
 
 For linting and code style, we use [`ruff`](https://docs.astral.sh/ruff/) and follow the
@@ -152,3 +156,12 @@ template is a good starting point.
 For contribution instructions that are specifically targeted at LLM agents, you can include an `AGENTS.md`
 file. This template includes such a file, but it only directs agents to the `CONTRIBUTING.md` file. It may be
 updated in the future with custom instructions for LLM agents that are found to be helpful.
+
+### Repository management
+
+This repository (by virtue of being within the [McDermott Health AI Lab GitHub
+Organization](https://github.com/McDermottHealthAI) comes pre-built with template GitHub issues. These have
+clear names and descriptions, and should be used on newly filed issues to ensure issues are easily searchable
+and clear to newcomers. Pull requests should be used for any new features to the main branch, and semantic
+versioning should be used, managed through `git` tags (e.g., `git tag 0.0.1`); these will automatically update
+the project's version due to the configuration in `pyproject.toml`.
