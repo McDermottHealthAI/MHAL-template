@@ -66,6 +66,7 @@ select = [
     "SIM", # flake8-simplify
     "TCH", # flake8-type-checking
     "N",   # pep8-naming
+    "D",   # docstring-checker
 ]
 
 [tool.ruff.lint.per-file-ignores]

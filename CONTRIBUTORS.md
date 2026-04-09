@@ -18,7 +18,7 @@ environment:
 
 ```bash
 uv sync
-uv activate
+source .venv/bin/activate # Not strictly necessary, but ensures if you don't use uv things still work.
 uv run pre-commit install
 ```
 
