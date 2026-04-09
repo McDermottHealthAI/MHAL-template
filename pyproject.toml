@@ -39,6 +39,7 @@ addopts = [
   "--ignore=AGENTS.md",
   "--ignore=CONTRIBUTORS.md",
   "--doctest-glob=*.md",
+  "--doctest-continue-on-failure",
 ]
 markers = [] # Add any custom pytest markers here
 doctest_optionflags = ["NORMALIZE_WHITESPACE", "ELLIPSIS"]
@@ -74,4 +75,10 @@ select = [
 "test_*" = ["DTZ001"]  # Ignore datetimez in test files
 
 [tool.ruff.lint.pep8-naming]
-extend-ignore-names = ["*MEDS*", "*NRT*", "D", "L"] # Some common names/abbreviations we want to allow
+extend-ignore-names = ["*MEDS*", "*NRT*", "D", "L"] # Allow common abbreviations; "D" is used for distributions/datasets
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.isort]
+known-first-party = ["package_name"]  # Replace with your actual package name

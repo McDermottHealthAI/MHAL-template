@@ -58,6 +58,7 @@ repos:
     hooks:
       - id: mdformat
         args: ["--number"]
+        exclude: "^AGENTS\\.md$"
         additional_dependencies:
           - mdformat-ruff
           - mdformat-gfm

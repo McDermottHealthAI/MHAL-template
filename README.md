@@ -21,7 +21,7 @@ This template contains the following files:
 ...     Path("."),
 ...     config=PrintConfig(ignore_regex=(
 ...         "^(\\.git|.*\\.gitkeep|\\.venv|\\.pytest_cache|.*__pycache__|.*\\.egg-info"
-...         "|node_modules|\\.ruff_cache"
+...         "|node_modules|\\.ruff_cache|\\.claude"
 ...         ")$"
 ...     ))
 ... )
@@ -38,6 +38,7 @@ This template contains the following files:
 ├── .pre-commit-config.yaml
 ├── .python-version
 ├── AGENTS.md
+├── CLAUDE.md
 ├── CONTRIBUTORS.md
 ├── LICENSE
 ├── README.md
@@ -65,6 +66,9 @@ from this repository; next, you will need to change the following aspects of the
 - Set-up appropriate tokens for CodeCov or other services (if necessary) within your repository.
 - Optionally, update the `LICENSE`, `CONTRIBUTING.md`, and `AGENTS.md` files with information relevant to
     your project.
+- Update `AGENTS.md` with any project-specific conventions (e.g., domain-specific naming rules,
+    special test fixtures, or additional build steps). Update the `known-first-party` value in the
+    `[tool.ruff.lint.isort]` section of `pyproject.toml`.
 
 > [!WARNING]
 > Note there is no folder in this repository template for `data` -- this is because _you should not put data in your code repository_. Datasets (public or private) should be stored outside of the repository (even if your repository is private) to avoid risking leakage of sensitive data, unnecessary bloat in your code repository, and over specialization to a particular data resource. Similarly, API keys or other "Secrets" for your project should also not be committed to your `git` repository or pushed to GitHub. Note that this applies to the underlying `git` repository as well as the online `github` -- if something is in your `git` commit history, it can be found through the published repository even if it is not on the main branch; in the event that you accidentally commit data or a secret variable, you need to [purge](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository) that commit from your `git` history (and/or from your repository) in addition to any other steps you need to take depending on what was added to a repository and/or exposed.
@@ -155,9 +159,10 @@ template is a good starting point.
 
 #### `AGENTS.md`
 
-For contribution instructions that are specifically targeted at LLM agents, you can include an `AGENTS.md`
-file. This template includes such a file, but it only directs agents to the `CONTRIBUTING.md` file. It may be
-updated in the future with custom instructions for LLM agents that are found to be helpful.
+This file provides structured instructions for AI coding agents (Claude Code, Cursor, Copilot,
+Codex, Gemini CLI, and others). It documents build commands, test conventions, code style rules,
+and repository boundaries so that agents can work effectively without repeated prompting. The
+`CLAUDE.md` symlink ensures Claude Code also reads this file via its native path.
 
 ### Repository management
 
