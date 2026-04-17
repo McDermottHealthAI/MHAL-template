@@ -40,6 +40,31 @@ should also refer to `CONTRIBUTORS.md`.
 - Use `gh` CLI for all GitHub operations (PRs, issues, code search, actions). Do not use the GitHub MCP
   server — `gh` is more reliable, uses far fewer tokens, and Claude already knows it well.
 
+### Pull Requests
+
+- **Link PRs to issues with closing keywords.** If the PR resolves an issue, include `Closes #<n>`
+  (or `Fixes #<n>` / `Resolves #<n>`) in the PR body so GitHub auto-closes the issue on merge.
+  For PRs that relate to an issue but do not fully resolve it, use `Refs #<n>` instead so the
+  issue stays open.
+- **Watch CI after pushing.** Every time you push a commit to a PR branch, wait for the CI checks
+  to complete, then assess the results. Use `gh pr checks <pr-number> --watch` (or
+  `gh run watch <run-id>`) to block on completion. If any check fails, pull the logs via
+  `gh run view --log-failed`, diagnose, fix, and push again. Do not declare a PR ready for review
+  while CI is red.
+- **Respond individually to every PR review comment.** For each line comment and each top-level
+  review comment, post a reply on that specific comment (via `gh api` to
+  `/repos/:owner/:repo/pulls/:pr/comments/:id/replies` for line comments, or the issue-comment
+  endpoint for top-level comments). Each reply should either (a) describe how the comment was
+  addressed (with a commit SHA if applicable), (b) answer the question posed, or (c) push back
+  with reasoning if you disagree. Do **not** consolidate responses into a single summary comment
+  on the PR — reviewers need to track resolution per thread.
+- **Sync with main via merge, not rebase.** To pick up new changes from `main` into a PR branch,
+  run `git merge origin/main` and push. Do not rebase + force-push unless there is a specific
+  reason (e.g., the branch history is obviously broken, or the maintainer asks). Merge preserves
+  review context: in-flight review comments stay anchored to the lines they were written on, and
+  reviewers can see exactly what you added since their last pass. Force-pushes invalidate that
+  context.
+
 ## CI
 
 - **Tests**: Run on push to `main` and on PRs (`uv run pytest` with coverage uploaded to Codecov).

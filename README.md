@@ -162,7 +162,10 @@ template is a good starting point.
 This file provides structured instructions for AI coding agents (Claude Code, Cursor, Copilot,
 Codex, Gemini CLI, and others). It documents build commands, test conventions, code style rules,
 and repository boundaries so that agents can work effectively without repeated prompting. The
-`CLAUDE.md` symlink ensures Claude Code also reads this file via its native path.
+`CLAUDE.md` symlink ensures Claude Code also reads this file via its native path. See the
+"AI-Assisted Development" section of [`CONTRIBUTORS.md`](CONTRIBUTORS.md) for one-time setup
+instructions covering Claude Code, the `gh` CLI, and recommended MCP servers for web search and
+library documentation.
 
 ### Repository management
 
