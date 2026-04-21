@@ -56,3 +56,81 @@ uv run pytest -v
 
 Tests and pre-commit checks are run as part of the continuous integration process, so any failures will prevent
 pull requests from being merged.
+
+## AI-Assisted Development
+
+This template is designed to work well with LLM coding agents. Agent-specific instructions live in
+`AGENTS.md` (read by Claude Code, Cursor, Copilot, Codex CLI, Aider, and others). `CLAUDE.md` is a
+symlink to `AGENTS.md` so Claude Code picks up the same instructions via its native path.
+
+The rest of this section covers one-time setup for agent-assisted work on a fresh machine. It is
+optional — you can contribute without any of this — but following it lets agents be productive on
+the repo without repeated prompting.
+
+### Claude Code
+
+[Claude Code](https://docs.claude.com/en/docs/claude-code) is Anthropic's terminal-based coding
+agent. Install and authenticate:
+
+```bash
+# Requires Node.js >= 18
+npm install -g @anthropic-ai/claude-code
+claude --version
+claude auth login
+```
+
+Start it inside the project directory (`claude`) and it will read `AGENTS.md` / `CLAUDE.md`
+automatically on session start.
+
+### GitHub CLI (`gh`)
+
+Agents should use the `gh` CLI for all GitHub operations (PRs, issues, releases, actions logs).
+It is faster, more reliable, and cheaper in tokens than the GitHub MCP server.
+
+```bash
+# Ubuntu/Debian
+sudo apt install gh
+
+# macOS
+brew install gh
+
+gh auth login
+```
+
+### Web search MCP (recommended)
+
+Claude Code has no built-in internet access. Adding a web-search MCP lets agents look up current
+docs, verify library behavior, and check recent releases.
+
+[Brave Search](https://brave.com/search/api/) (free tier, general-purpose search):
+
+```bash
+claude mcp add brave-search --scope user \
+	-e BRAVE_API_KEY=your-key \
+	-- npx -y @modelcontextprotocol/server-brave-search
+```
+
+### Library docs MCP (recommended)
+
+[Context7](https://context7.com/) fetches current, version-specific documentation for libraries,
+frameworks, and SDKs. No API key required. This is more reliable than web search for library-
+specific questions because it pulls from the actual docs.
+
+```bash
+claude mcp add context7 --scope user -- npx -y @upstash/context7-mcp
+```
+
+Install these with `--scope user` so they are available across all your projects, not just this
+one.
+
+### Other agents
+
+Most modern LLM coding agents read `AGENTS.md` natively (Cursor, Codex CLI, Aider, Windsurf,
+GitHub Copilot). For agents that expect a different filename (e.g., Gemini CLI expects
+`GEMINI.md`), symlink it:
+
+```bash
+ln -s AGENTS.md GEMINI.md
+```
+
+This keeps one source of truth for agent instructions.
