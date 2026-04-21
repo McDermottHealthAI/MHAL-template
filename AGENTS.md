@@ -40,6 +40,52 @@ should also refer to `CONTRIBUTORS.md`.
 - Use `gh` CLI for all GitHub operations (PRs, issues, code search, actions). Do not use the GitHub MCP
   server — `gh` is more reliable, uses far fewer tokens, and Claude already knows it well.
 
+### Pull Requests
+
+- **Link PRs to issues with closing keywords.** If the PR resolves an issue, include `Closes #<n>`
+  (or `Fixes #<n>` / `Resolves #<n>`) in the PR body so GitHub auto-closes the issue on merge.
+  For PRs that relate to an issue but do not fully resolve it, use `Refs #<n>` instead so the
+  issue stays open.
+- **Watch CI after pushing.** Every time you push a commit to a PR branch, wait for the CI checks
+  to complete, then assess the results. Use `gh pr checks <pr-number> --watch` (or
+  `gh run watch <run-id>`) to block on completion. If any check fails, pull the logs via
+  `gh run view --log-failed`, diagnose, fix, and push again. Do not declare a PR ready for review
+  while CI is red.
+- **Respond individually to every PR review comment.** Scan *both* locations: in-line review
+  comments (attached to diff lines, fetched via `gh api /repos/:owner/:repo/pulls/:pr/comments`)
+  *and* top-level PR conversation comments (fetched via
+  `gh api /repos/:owner/:repo/issues/:pr/comments`). It is easy to miss one set if you only
+  look at the diff. For each comment, post a reply on that specific thread — use the
+  `/repos/:owner/:repo/pulls/:pr/comments/:id/replies` endpoint for line comments and the
+  issue-comment endpoint for top-level comments. Each reply should either (a) describe how the
+  comment was addressed (with a commit SHA if applicable), (b) answer the question posed, or
+  (c) push back with reasoning if you disagree. Do **not** consolidate responses into a single
+  summary comment on the PR — reviewers need to track resolution per thread.
+- **Resolve AI review threads when fully addressed.** For straightforward Copilot / AI-reviewer
+  line comments where the fix is unambiguous and your reply is a simple acknowledgment, mark
+  the review thread resolved via the GraphQL API:
+  `gh api graphql -f query='mutation{resolveReviewThread(input:{threadId:"<id>"}){thread{isResolved}}}'`.
+  Get thread IDs from the PR's `reviewThreads` GraphQL field. This only applies to *review
+  threads* (line comments) — top-level PR comments have no resolved state. Do **not**
+  auto-resolve threads from human reviewers; leave that for the reviewer who raised the comment.
+- **Sync with main via merge, not rebase.** To pick up new changes from `main` into a PR branch,
+  run `git merge origin/main` and push. Do not rebase + force-push unless there is a specific
+  reason (e.g., the branch history is obviously broken, or the maintainer asks). Merge preserves
+  review context: in-flight review comments stay anchored to the lines they were written on, and
+  reviewers can see exactly what you added since their last pass. Force-pushes invalidate that
+  context.
+- **Scan for upstream branch updates at the start of every work stream and periodically.**
+  Before starting new work, and on long-running branches, run `git fetch --all --prune` and
+  check whether the branch you are based on (typically `main`, or a parent branch for stacked
+  PRs) has moved: `git log --oneline HEAD..origin/<base>`. If so, merge the updates in
+  (`git merge origin/<base>`) before continuing. This keeps stacked PRs coherent, avoids
+  large late-stage merge conflicts, and surfaces conflicting work from other branches early.
+- **Consider squash vs. regular merge on every PR.** Default to a regular merge; use squash
+  only when the PR is a single logical change whose per-commit history adds no value. **Never
+  squash roll-up PRs or release-candidate PRs going into `main`** — squashing collapses the
+  component commits that record what actually shipped, and the individual commit history on
+  those PRs is load-bearing (for changelogs, bisecting, and attribution).
+
 ## CI
 
 - **Tests**: Run on push to `main` and on PRs (`uv run pytest` with coverage uploaded to Codecov).
