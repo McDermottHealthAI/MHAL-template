@@ -29,6 +29,7 @@ This template contains the following files:
 │   ├── actions
 │   │   └── setup
 │   │       └── action.yaml
+│   ├── dependabot.yml
 │   └── workflows
 │       ├── code-quality-main.yaml
 │       ├── code-quality-pr.yaml
