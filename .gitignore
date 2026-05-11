@@ -212,3 +212,5 @@ WARP.md
 # Claude Code local/ephemeral files
 .claude/settings.local.json
 .claude/memory/
+.claude/*.lock
+.claude/scheduled_tasks/

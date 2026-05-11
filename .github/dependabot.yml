@@ -10,6 +10,12 @@ updates:
     # and yanked before they propagate here.
     cooldown:
       default-days: 7
+    # Skip patch-level Action updates — they're almost always non-functional
+    # changes to the action's own README or CI. Security advisories fire on
+    # a separate channel regardless of this filter.
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-patch"]
     groups:
       actions:
         patterns: ["*"]
