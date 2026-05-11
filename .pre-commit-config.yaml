@@ -67,6 +67,34 @@ repos:
     hooks:
       - id: uv-lock
 
+  # Validate pyproject.toml against PEP 517/518/621 schemas. Catches typos and
+  # structural errors (misspelled keys, wrong types, bad version specifiers)
+  # that the basic `check-toml` hook silently accepts.
+  - repo: https://github.com/abravalheri/validate-pyproject
+    rev: v0.25
+    hooks:
+      - id: validate-pyproject
+
+  # Secret scanner. Far broader than detect-private-key (which only catches
+  # SSH keys): ~100 rules for AWS, GCP, Stripe, Slack, generic API tokens, etc.
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.30.1
+    hooks:
+      - id: gitleaks
+
+  # Dependency hygiene: catches unused deps in pyproject.toml, imports of
+  # packages not declared as deps, and transitive imports that should be
+  # declared as direct deps. Runs via `uv` so it has access to the project's
+  # resolved environment.
+  - repo: local
+    hooks:
+      - id: deptry
+        name: deptry
+        entry: uv run --with deptry==0.25.1 deptry src
+        language: system
+        pass_filenames: false
+        always_run: true
+
   # md formatting
   - repo: https://github.com/executablebooks/mdformat
     rev: 0.7.22
