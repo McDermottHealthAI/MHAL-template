@@ -2,10 +2,16 @@ name: Publish Python 🐍 distribution 📦 to PyPI and TestPyPI
 
 on: push
 
+permissions:
+  contents: read
+
 jobs:
   build:
     name: Build distribution 📦
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
 
     strategy:
       matrix:
@@ -13,6 +19,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v6.0.2
+        with:
+          persist-credentials: false
 
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v6.2.0
@@ -83,18 +91,22 @@ jobs:
       - name: Create GitHub Release
         env:
           GITHUB_TOKEN: ${{ github.token }}
+          REF_NAME: ${{ github.ref_name }}
+          REPOSITORY: ${{ github.repository }}
         run: >-
           gh release create
-          '${{ github.ref_name }}'
-          --repo '${{ github.repository }}'
+          "$REF_NAME"
+          --repo "$REPOSITORY"
           --generate-notes
       - name: Upload artifact signatures to GitHub Release
         env:
           GITHUB_TOKEN: ${{ github.token }}
+          REF_NAME: ${{ github.ref_name }}
+          REPOSITORY: ${{ github.repository }}
         # Upload to GitHub Release using the `gh` CLI.
         # `dist/` contains the built packages, and the
         # sigstore-produced signatures and certificates.
         run: >-
           gh release upload
-          '${{ github.ref_name }}' dist/**
-          --repo '${{ github.repository }}'
+          "$REF_NAME" dist/**
+          --repo "$REPOSITORY"

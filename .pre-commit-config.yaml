@@ -95,6 +95,16 @@ repos:
         pass_filenames: false
         always_run: true
 
+  # Security-focused GitHub Actions analyzer. Complements actionlint
+  # (correctness-focused) — catches script injection via untrusted context,
+  # unpinned third-party actions (supply-chain risk), excessive permissions,
+  # credential persistence in checkout, GITHUB_TOKEN misuse, etc. Configured
+  # in .github/zizmor.yml.
+  - repo: https://github.com/woodruffw/zizmor-pre-commit
+    rev: v1.24.1
+    hooks:
+      - id: zizmor
+
   # md formatting
   - repo: https://github.com/executablebooks/mdformat
     rev: 0.7.22

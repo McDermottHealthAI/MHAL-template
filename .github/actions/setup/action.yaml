@@ -24,5 +24,7 @@ runs:
 
     - name: Install packages
       shell: bash
+      env:
+        UV_GROUP: ${{ inputs.group }}
       run: |
-        uv sync --locked --group ${{ inputs.group }}
+        uv sync --locked --group "$UV_GROUP"

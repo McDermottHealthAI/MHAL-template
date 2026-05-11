@@ -1,0 +1,29 @@
+# zizmor configuration. See https://docs.zizmor.sh/configuration/
+#
+# `unpinned-uses`: zizmor's default policy requires every action reference to be
+# a 40-char commit SHA. That is the strictest stance but high friction even with
+# Dependabot. We relax it to allow tag-pinning (`ref-pin`) for publishers we
+# explicitly trust, and require commit-hash-pinning (`hash-pin`) for everything
+# else. Dependabot (.github/dependabot.yml) keeps the tag pins current.
+rules:
+  unpinned-uses:
+    config:
+      policies:
+        # First-party GitHub-owned actions.
+        actions/*: ref-pin
+        github/*: ref-pin
+        # Astral (uv, ruff, ty).
+        astral-sh/*: ref-pin
+        # Codecov (coverage + test results upload).
+        codecov/*: ref-pin
+        # PyPA (Python Packaging Authority).
+        pypa/*: ref-pin
+        # Sigstore (Linux Foundation).
+        sigstore/*: ref-pin
+        # Pre-commit hook authors used in this repo's workflows.
+        rhysd/*: ref-pin
+        # tj-actions/changed-files (had a March-2025 supply-chain compromise;
+        # consider tightening to hash-pin if you want stricter security).
+        tj-actions/*: ref-pin
+        # Default for everything else: require commit-hash pinning.
+        "*": hash-pin
