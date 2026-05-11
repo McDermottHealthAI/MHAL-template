@@ -9,12 +9,18 @@ name: Code Quality PR
 on:
   pull_request:
 
+permissions:
+  contents: read
+  pull-requests: read
+
 jobs:
   code-quality:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v6.0.2
+        with:
+          persist-credentials: false
 
       - name: Setup package
         uses: ./.github/actions/setup
@@ -26,9 +32,15 @@ jobs:
         uses: tj-actions/changed-files@v47.0.5
 
       - name: List all changed files
-        run: echo '${{ steps.file_changes.outputs.all_changed_files }}'
+        env:
+          ALL_CHANGED_FILES: ${{ steps.file_changes.outputs.all_changed_files }}
+        run: echo "$ALL_CHANGED_FILES"
 
       - name: Run pre-commits
-        run: >
-          uv run pre-commit run --show-diff-on-failure
-          --files ${{ steps.file_changes.outputs.all_changed_files}}
+        env:
+          ALL_CHANGED_FILES: ${{ steps.file_changes.outputs.all_changed_files }}
+        run: |
+          # Intentional word splitting: the action output is a space-separated
+          # list of file paths.
+          # shellcheck disable=SC2086
+          uv run pre-commit run --show-diff-on-failure --files $ALL_CHANGED_FILES

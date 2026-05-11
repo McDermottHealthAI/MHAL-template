@@ -30,11 +30,12 @@ This template contains the following files:
 │   │   └── setup
 │   │       └── action.yaml
 │   ├── dependabot.yml
-│   └── workflows
-│       ├── code-quality-main.yaml
-│       ├── code-quality-pr.yaml
-│       ├── python-build.yaml
-│       └── tests.yaml
+│   ├── workflows
+│   │   ├── code-quality-main.yaml
+│   │   ├── code-quality-pr.yaml
+│   │   ├── python-build.yaml
+│   │   └── tests.yaml
+│   └── zizmor.yml
 ├── .gitignore
 ├── .pre-commit-config.yaml
 ├── .python-version

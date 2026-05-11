@@ -5,6 +5,11 @@ updates:
     directory: "/"
     schedule:
       interval: "monthly"
+    # Wait 7 days after a release before opening an update PR. Mitigates
+    # supply-chain risk by giving time for malicious releases to be flagged
+    # and yanked before they propagate here.
+    cooldown:
+      default-days: 7
     groups:
       actions:
         patterns: ["*"]
@@ -20,6 +25,8 @@ updates:
     directory: "/"
     schedule:
       interval: "monthly"
+    cooldown:
+      default-days: 7
     groups:
       python:
         patterns: ["*"]
