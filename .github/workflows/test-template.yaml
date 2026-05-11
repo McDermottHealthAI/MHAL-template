@@ -1,0 +1,65 @@
+name: Test template
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test-render:
+    name: Render template + run rendered project's checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v8.1.0
+        with:
+          enable-cache: true
+
+      - name: Install copier
+        run: uv tool install copier
+
+      - name: Render template with default answers
+        env:
+          PACKAGE_NAME: my_project
+          AUTHOR_NAME: CI Smoke Test
+          AUTHOR_EMAIL: ci@example.com
+        run: |
+          copier copy . /tmp/rendered \
+            --defaults \
+            --data package_name="$PACKAGE_NAME" \
+            --data author_name="$AUTHOR_NAME" \
+            --data author_email="$AUTHOR_EMAIL" \
+            --vcs-ref HEAD \
+            --trust
+
+      - name: Verify rendered pyproject.toml has no leftover placeholders
+        run: |
+          # Fail loudly if any [[ var ]] or {{ var }} Jinja syntax slipped through.
+          if grep -RnE '\[\[ ?[a-z_]+ ?\]\]|\{\{ ?[a-z_]+ ?\}\}' /tmp/rendered/; then
+            echo "::error::Unrendered Jinja placeholders found in rendered project."
+            exit 1
+          fi
+
+      - name: Sync rendered project
+        working-directory: /tmp/rendered
+        run: uv sync
+
+      - name: Run rendered project's pre-commit
+        working-directory: /tmp/rendered
+        # First run may auto-fix files (e.g., mdformat is non-idempotent on
+        # first contact); re-run to confirm idempotence.
+        run: |
+          uv run pre-commit run --all-files || uv run pre-commit run --all-files
+
+      - name: Run rendered project's pytest
+        working-directory: /tmp/rendered
+        run: uv run pytest -v
