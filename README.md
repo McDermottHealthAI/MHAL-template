@@ -77,29 +77,44 @@ from this repository; next, you will need to change the following aspects of the
 
 ## Documentation
 
-### Python Build System
+### Python Build System: `uv`
 
-This project is built with the [`uv`](https://docs.astral.sh/uv/) tool for managing python builds and environments. `uv` allows you to update package dependencies, install and build your package, and maintain a "lockfile" of specific package and python versions for developmental reproducibility, all through a seamless, `pip` like interface. To use `uv` to install a virtual environment with package dependencies, you can run `uv sync` when in the repository directory. Learn more about it in the documentation linked above.
+This project uses [`uv`](https://docs.astral.sh/uv/) as its sole Python package manager. `uv` is a
+fast Rust-based tool from [Astral](https://astral.sh) (the same team behind `ruff`) that replaces
+`pip`, `pip-tools`, `virtualenv`, and `pyenv` with one tool and a single, consistent workflow.
+
+Why we standardize on `uv` across the lab:
+
+- **Reproducible environments.** `uv.lock` pins exact versions of every transitive dependency, so
+    collaborators and CI install the identical environment.
+- **Fast.** Dependency resolution and installs run in seconds, not minutes.
+- **Modern defaults.** Lockfile-first, `pyproject.toml`-native; `uv` also installs the right Python
+    interpreter for you based on `.python-version`, so you don't need a separate Python-version
+    manager.
+- **One tool, one workflow** across all of our research repos, which keeps onboarding fast.
+
+The shortest path to install `uv` is `curl -LsSf https://astral.sh/uv/install.sh | sh` (Linux/macOS)
+or `brew install uv`. See the [install guide](https://docs.astral.sh/uv/getting-started/installation/)
+for other platforms, and see [`CONTRIBUTORS.md`](CONTRIBUTORS.md#build-system-uv) for the commands
+you'll use day-to-day.
 
 ### Linting / Code Style
 
-For linting and code style, we use [`ruff`](https://docs.astral.sh/ruff/) and follow the
-[Python Google Style Guide](https://google.github.io/styleguide/pyguide.html). Linting and formatting happen
-automatically upon commit via [`pre-commit`](https://pre-commit.com/) hooks. **You must install the pre-commit
-hooks locally via `uv run pre-commit install` after installing the package locally via `uv sync` to enable this
-functionality!** Regardless of pre-commit installation status, you can always run `uv run pre-commit run --all-files` to check all files at any time. _This process will modify your code_ as it will attempt to fix
-many errors automatically.
-
-Pre-commit tests are configured via the [`.pre-commit-config.yaml`](.pre-commit-config.yaml) file.
+For linting and code style we use [`ruff`](https://docs.astral.sh/ruff/) following the
+[Python Google Style Guide](https://google.github.io/styleguide/pyguide.html). Formatting and lint
+fixes happen automatically on commit via [`pre-commit`](https://pre-commit.com/) hooks, configured
+in [`.pre-commit-config.yaml`](.pre-commit-config.yaml). See
+[`CONTRIBUTORS.md`](CONTRIBUTORS.md#code-style) for install steps and the full list of hooks
+(which includes more than just ruff — secret scanning, dependency hygiene, workflow security, etc.).
 
 ### Testing
 
-We use [`pytest`](https://docs.pytest.org/en/stable/) and
-[`doctest`](https://docs.python.org/3/library/doctest.html) for testing. To run the tests, after installing the
-package locally via `uv sync`, simply run `uv run pytest` in the root directory. If you install the package via
-`pip install -e .`, you can also run `pytest` directly. In addition, we use `pytest-cov` for code coverage
-reporting, integrated with [codecov.io](https://about.codecov.io/) for tracking coverage over time, PR
-integration, and a README badge.
+We use [`pytest`](https://docs.pytest.org/en/stable/) plus
+[`doctest`](https://docs.python.org/3/library/doctest.html), with
+[`pytest-cov`](https://github.com/pytest-dev/pytest-cov) reporting coverage to
+[codecov.io](https://about.codecov.io/) for the README badge and PR-level coverage diffs. Run
+`uv run pytest -v` to execute the full suite locally; see
+[`CONTRIBUTORS.md`](CONTRIBUTORS.md#testing) for the full setup and conventions.
 
 #### Testing Style and Doctests
 
@@ -153,27 +168,29 @@ This file contains the main documentation for your project, and should be kept u
 This file contains the license for your project. Often, [The MIT License](https://opensource.org/license/mit)
 is a good choice for research projects.
 
-#### `CONTRIBUTING.md`
+#### `CONTRIBUTORS.md`
 
-This file helps guide contributors to contribute in the manner and style you prefer. It is also often used to
-guide large language model (LLM) agents that may be contributing to the project. The included guide in this
-template is a good starting point.
+This is the **source of truth** for build, test, code-style, and PR-workflow conventions. Both
+human contributors and AI agents (via `AGENTS.md`) are pointed at this file. The included guide in
+the template is a good starting point — keep it up to date as your project's conventions evolve.
 
-#### `AGENTS.md`
+#### `AGENTS.md` and `CLAUDE.md`
 
-This file provides structured instructions for AI coding agents (Claude Code, Cursor, Copilot,
-Codex, Gemini CLI, and others). It documents build commands, test conventions, code style rules,
-and repository boundaries so that agents can work effectively without repeated prompting. The
-`CLAUDE.md` symlink ensures Claude Code also reads this file via its native path. See the
-"AI-Assisted Development" section of [`CONTRIBUTORS.md`](CONTRIBUTORS.md) for one-time setup
-instructions covering Claude Code, the `gh` CLI, and recommended MCP servers for web search and
-library documentation.
+`AGENTS.md` provides AI coding agents (Claude Code, Cursor, Copilot, Codex CLI, Gemini CLI, and
+others) with a short pointer to `CONTRIBUTORS.md` plus a handful of agent-specific reminders
+(use `gh` not the GitHub MCP, doctest namespace pre-population, TDD encouragement, what not to do).
+`CLAUDE.md` is a symlink to `AGENTS.md` so Claude Code picks up the same instructions via its
+native path. See the "AI-Assisted Development" section of [`CONTRIBUTORS.md`](CONTRIBUTORS.md) for
+one-time setup instructions covering Claude Code, the `gh` CLI, and recommended MCP servers for
+web search and library documentation.
 
 ### Repository management
 
-This repository (by virtue of being within the [McDermott Health AI Lab GitHub
-Organization](https://github.com/McDermottHealthAI) comes pre-built with template GitHub issues. These have
-clear names and descriptions, and should be used on newly filed issues to ensure issues are easily searchable
-and clear to newcomers. Pull requests should be used for any new features to the main branch, and semantic
-versioning should be used, managed through `git` tags (e.g., `git tag 0.0.1`); these will automatically update
-the project's version due to the configuration in `pyproject.toml`.
+This repository lives within the
+[McDermott Health AI Lab GitHub Organization](https://github.com/McDermottHealthAI), which sets
+default issue labels and (in time) issue templates that propagate to new repos. Use those labels
+on new issues so filings stay searchable and consistent. All changes to `main` go through pull
+requests; see the "Pull Request Workflow" section of [`CONTRIBUTORS.md`](CONTRIBUTORS.md) for the
+expected flow (closing keywords, CI watching, comment replies, merge-vs-rebase policy). Versioning
+follows semantic versioning, managed through `git` tags (e.g., `git tag 0.0.1`) — `setuptools-scm`
+reads the tag and stamps the package version automatically.
