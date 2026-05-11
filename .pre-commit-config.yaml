@@ -59,6 +59,14 @@ repos:
     hooks:
       - id: actionlint
 
+  # Keep uv.lock in sync with pyproject.toml. Without this hook it is easy to
+  # change a dependency and forget to regenerate the lockfile, breaking
+  # reproducibility for collaborators and CI.
+  - repo: https://github.com/astral-sh/uv-pre-commit
+    rev: 0.11.13
+    hooks:
+      - id: uv-lock
+
   # md formatting
   - repo: https://github.com/executablebooks/mdformat
     rev: 0.7.22
