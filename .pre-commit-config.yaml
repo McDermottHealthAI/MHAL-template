@@ -52,6 +52,13 @@ repos:
     hooks:
       - id: shellcheck
 
+  # GitHub Actions workflow linter (catches expression typos, bad action inputs,
+  # invalid runner labels, shell errors in `run:` blocks via shellcheck, etc.)
+  - repo: https://github.com/rhysd/actionlint
+    rev: v1.7.12
+    hooks:
+      - id: actionlint
+
   # md formatting
   - repo: https://github.com/executablebooks/mdformat
     rev: 0.7.22
