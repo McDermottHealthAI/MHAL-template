@@ -3,21 +3,27 @@ requires = ["setuptools>=80.9.0", "setuptools-scm>=9.2", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "package_name"
-dynamic = ["version"] # Makes setuptools-scm manage the version
+name = "[[ pypi_name ]]"
+dynamic = ["version"] # Managed by setuptools-scm from git tags
 authors = [
-  {name="Matthew McDermott", email="mattmcdermott8@gmail.com"}, # Replace with your team's details
+  {name="[[ author_name ]]", email="[[ author_email ]]"},
 ]
-description = "Add your description here"
+description = "[[ package_description ]]"
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=[[ python_version ]]"
 classifiers = [
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License", # Change if not using MIT license
+[%- if license == "MIT" %]
+    "License :: OSI Approved :: MIT License",
+[%- elif license == "Apache-2.0" %]
+    "License :: OSI Approved :: Apache Software License",
+[%- elif license == "BSD-3-Clause" %]
+    "License :: OSI Approved :: BSD License",
+[%- endif %]
     "Operating System :: OS Independent",
 ]
 dependencies = [
-] # Add your runtime dependencies here
+]
 
 [dependency-groups]
 dev = [
@@ -27,38 +33,33 @@ dev = [
   # additional_dependencies) gives a single source of truth and keeps local
   # `uv run mdformat ...` runs consistent with CI pre-commit runs.
   "shfmt-py==3.12.0.2",
-] # Add your development (lint, test) dependencies here
-docs = [] # Add your documentation dependencies here (I recommend mkdocs-material)
+]
+docs = []
 
-[tool.setuptools_scm] # Required for setuptools-scm to work, even if empty
+[tool.setuptools_scm]
 
-[project.optional-dependencies] # Add any optional dependencies here, installable via `pip install .[extra]`
-
-[project.scripts] # Add any console scripts here
-
-[tool.pytest.ini_options] # Default pytest options
+[tool.pytest.ini_options]
 addopts = [
   "--color=yes",
-  "--doctest-modules", # Ensures that doctest runs
+  "--doctest-modules",
   "--ignore=docs",
   "--ignore=AGENTS.md",
   "--ignore=CONTRIBUTORS.md",
   "--doctest-glob=*.md",
   "--doctest-continue-on-failure",
 ]
-markers = [] # Add any custom pytest markers here
+markers = []
 doctest_optionflags = ["NORMALIZE_WHITESPACE", "ELLIPSIS"]
 
 [project.urls]
-Homepage = "https://github.com/McDermottHealthAI/REPO_NAME" # Replace with your repo URL
-Issues = "https://github.com/McDermottHealthAI/REPO_NAME/issues" # Replace with your repo URL
+Homepage = "https://github.com/[[ github_org ]]/[[ github_repo ]]"
+Issues = "https://github.com/[[ github_org ]]/[[ github_repo ]]/issues"
 
-[tool.ruff] # Ruff configuration for linting and formatting
-target-version = "py312"
+[tool.ruff]
+target-version = "py[[ python_version | replace('.', '') ]]"
 line-length = 110
 extend-exclude = ["docs/index.md"]
 
-# Enable linters
 [tool.ruff.lint]
 select = [
     "E",   # pycodestyle
@@ -80,10 +81,10 @@ select = [
 "test_*" = ["DTZ001"]  # Ignore datetimez in test files
 
 [tool.ruff.lint.pep8-naming]
-extend-ignore-names = ["*MEDS*", "*NRT*", "D", "L"] # Allow common abbreviations; "D" is used for distributions/datasets
+extend-ignore-names = ["*MEDS*", "*NRT*", "D", "L"] # "D" is used for distributions/datasets
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
 
 [tool.ruff.lint.isort]
-known-first-party = ["package_name"]  # Replace with your actual package name
+known-first-party = ["[[ package_name ]]"]

@@ -63,8 +63,8 @@ and the CI release workflow publishes to PyPI.
 Clone the repository, sync the environment, and install the pre-commit hooks:
 
 ```bash
-git clone https://github.com/McDermottHealthAI/MHAL-template.git
-cd MHAL-template
+git clone https://github.com/[[ github_org ]]/[[ github_repo ]].git
+cd [[ github_repo ]]
 uv sync
 uv run pre-commit install
 ```
@@ -148,7 +148,7 @@ Both pre-commit and pytest run in CI on every PR. Failures block merge.
 - For feature proposals, include: motivation (concrete use case), proposed API/UX sketch, and
     whether you're volunteering to implement it.
 - Labels are managed at the [organization
-    level](https://github.com/McDermottHealthAI). Use existing labels rather than creating new
+    level](https://github.com/[[ github_org ]]). Use existing labels rather than creating new
     per-repo labels unless a repo-specific need clearly justifies it.
 
 ## Pull Request Workflow
