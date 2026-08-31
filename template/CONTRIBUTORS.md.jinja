@@ -40,7 +40,7 @@ On macOS you can also `brew install uv`. On Windows, see the official install gu
 
 ### Common commands
 
-```bash
+```console
 uv sync                    # install/update project deps + create .venv
 uv sync --group dev        # include the dev dependency group
 uv run <cmd>               # run a command inside the project's environment
@@ -88,6 +88,10 @@ issues that would have been auto-fixed locally.
 
 Use `>>>` and `...` prompts as you would in a docstring. **A blank line must separate the final
 output line from the closing triple-backtick.**
+
+Tag the block `pycon`, not `python`. A doctest is a console session rather than a Python module, so
+the `mdformat` pre-commit hook cannot parse it as `python` and skips it with a warning. `pytest`
+collects doctests from the raw file text, so the tag does not affect test collection.
 
 ### Doctest helpers
 

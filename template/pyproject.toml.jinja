@@ -27,7 +27,11 @@ dependencies = [
 
 [dependency-groups]
 dev = [
-  "pre-commit<4", "ruff", "pytest", "pytest-cov", "pretty-print-directory",
+  "pre-commit", "pytest", "pytest-cov", "pretty-print-directory",
+  # Keep this pin in sync with the `ruff-pre-commit` rev in
+  # .pre-commit-config.yaml. If the two drift, `uv run ruff format` and the
+  # pre-commit hook can disagree and fight over the same files.
+  "ruff==0.16.5",
   # shfmt-py bundles the `shfmt` binary used by the mdformat-shfmt pre-commit
   # hook. Pinning it here (in addition to the pre-commit hook's
   # additional_dependencies) gives a single source of truth and keeps local
