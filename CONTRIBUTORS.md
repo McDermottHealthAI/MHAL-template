@@ -40,7 +40,7 @@ On macOS you can also `brew install uv`. On Windows, see the official install gu
 
 ### Common commands
 
-```bash
+```console
 uv sync                    # install/update project deps + create .venv
 uv sync --group dev        # include the dev dependency group
 uv run <cmd>               # run a command inside the project's environment

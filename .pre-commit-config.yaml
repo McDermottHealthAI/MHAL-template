@@ -23,7 +23,7 @@ repos:
 
   # python code formatting, linting, and import sorting using ruff
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.12.10
+    rev: v0.16.5
     hooks:
       # Run the formatter
       - id: ruff-format
@@ -32,15 +32,15 @@ repos:
         args: ["--fix", "--exit-non-zero-on-fix"]
 
   # python docstring formatting
-  - repo: https://github.com/myint/docformatter
-    rev: v1.7.7
+  - repo: https://github.com/PyCQA/docformatter
+    rev: v1.7.8
     hooks:
       - id: docformatter
         args: [--in-place, --wrap-summaries=110, --wrap-descriptions=110]
 
   # yaml formatting
-  - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: v4.0.0-alpha.8
+  - repo: https://github.com/rbubley/mirrors-prettier
+    rev: v3.9.6
     hooks:
       - id: prettier
         types: [yaml]
@@ -48,7 +48,7 @@ repos:
 
   # shell scripts linter
   - repo: https://github.com/shellcheck-py/shellcheck-py
-    rev: v0.11.0.1
+    rev: v0.11.0.1-1
     hooks:
       - id: shellcheck
 
@@ -63,7 +63,7 @@ repos:
   # change a dependency and forget to regenerate the lockfile, breaking
   # reproducibility for collaborators and CI.
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.11.13
+    rev: 0.12.7
     hooks:
       - id: uv-lock
 
@@ -71,7 +71,7 @@ repos:
   # structural errors (misspelled keys, wrong types, bad version specifiers)
   # that the basic `check-toml` hook silently accepts.
   - repo: https://github.com/abravalheri/validate-pyproject
-    rev: v0.25
+    rev: "0.26"
     hooks:
       - id: validate-pyproject
 
@@ -101,12 +101,15 @@ repos:
   # credential persistence in checkout, GITHUB_TOKEN misuse, etc. Configured
   # in .github/zizmor.yml.
   - repo: https://github.com/woodruffw/zizmor-pre-commit
-    rev: v1.24.1
+    rev: v1.30.0
     hooks:
       - id: zizmor
 
   # md formatting
   - repo: https://github.com/executablebooks/mdformat
+    # Held at 0.7.x deliberately: mdformat 1.0.0 is incompatible with the
+    # plugin set below (mdformat-tables, -gfm and -gfm-alerts all require
+    # mdformat<0.8.0). Revisit once those plugins support 1.x.
     rev: 0.7.22
     hooks:
       - id: mdformat
@@ -132,7 +135,7 @@ repos:
 
   # word spelling linter
   - repo: https://github.com/codespell-project/codespell
-    rev: v2.4.1
+    rev: v2.4.3
     hooks:
       - id: codespell
         args:
@@ -141,7 +144,7 @@ repos:
 
   # jupyter notebook cell output clearing
   - repo: https://github.com/kynan/nbstripout
-    rev: 0.8.1
+    rev: 0.9.1
     hooks:
       - id: nbstripout
 

@@ -16,14 +16,16 @@ A minimal python package/project template for McDermott Health AI Lab research p
 
 This template contains the following files:
 
-```python
+```pycon
 >>> print_directory(
 ...     Path("."),
-...     config=PrintConfig(ignore_regex=(
-...         "^(\\.git|.*\\.gitkeep|\\.venv|\\.pytest_cache|.*__pycache__|.*\\.egg-info"
-...         "|node_modules|\\.ruff_cache|\\.claude"
-...         ")$"
-...     ))
+...     config=PrintConfig(
+...         ignore_regex=(
+...             "^(\\.git|.*\\.gitkeep|\\.venv|\\.pytest_cache|.*__pycache__|.*\\.egg-info"
+...             "|node_modules|\\.ruff_cache|\\.claude"
+...             ")$"
+...         )
+...     ),
 ... )
 ├── .github
 │   ├── actions
@@ -130,6 +132,9 @@ a standalone unit test in a `tests/**/test_*.py` file.
 > [!NOTE]
 > Note that when embedding doctests in markdown files, you must still use the `>>>` and `...` prompts, and you
 > must ensure there is a new line separating the final output line from the `\`\`\`\` closing the code block.
+> Tag the block `pycon` rather than `python`: a doctest is a console session, not a Python module, so
+> the `mdformat` hook cannot parse it as `python` and skips it with a warning. `pytest` collects
+> doctests from the raw file text, so the tag does not affect test collection.
 > See above for an example.
 
 Note that you can make doctests much easier to write and read (by omitting common setup or import code) by
