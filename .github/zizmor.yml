@@ -5,7 +5,19 @@
 # Dependabot. We relax it to allow tag-pinning (`ref-pin`) for publishers we
 # explicitly trust, and require commit-hash-pinning (`hash-pin`) for everything
 # else. Dependabot (.github/dependabot.yml) keeps the tag pins current.
+#
+# `self-repository`: zizmor >=1.30 wants in-repo actions referenced with
+# GitHub's `$/...` syntax (supported since July 2026) instead of `./...`.
+# We can't adopt it yet: actionlint (also a hook here) rejects `$/` as a
+# malformed `uses:` value, so the two linters would deadlock. Revisit once
+# actionlint ships support -- https://github.com/rhysd/actionlint/issues/711
 rules:
+  self-repository:
+    ignore:
+      - code-quality-main.yaml
+      - code-quality-pr.yaml
+      - tests.yaml
+
   unpinned-uses:
     config:
       policies:
